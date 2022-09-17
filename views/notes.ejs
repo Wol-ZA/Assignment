@@ -1,0 +1,36 @@
+<%- include('partials/head') %>
+
+<div class="alert alert-primary alert-dismissible" role="alert">
+  <strong><%= user %> Logged in</strong>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+<h1>Welcome</h1>
+<h2>Submit your own note...</h2>
+<form action="/notes" method="post">
+  <div class="mb-3">
+    <label for="subject" class="form-label">Subject</label>
+    <input type="text" class="form-control" id="subject" name="subject">
+  </div>
+  <div class="mb-3">
+    <label for="content" class="form-label">Content</label>
+    <input type="text" class="form-control" id="content" name="content">
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form><br>
+<h2>... or Browse others</h2>
+
+
+<% data.forEach((card)=>{ %>
+<div class="card">
+    <h5 class="card-header"><%= card.user_name %> created at <%= card.note_date %></h5>
+      <div class="card-body">
+    <h5 class="card-title"><%= card.note_subject %></h5>
+        <p class="card-text"><%= card.note_content %></p>
+  </div>
+</div>
+<% })%>
+
+</body>
+
+
+</html>
