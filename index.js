@@ -140,6 +140,8 @@ app.post('/login', (req, res) => {
 
 app.post('/notes' , (req, res)=>{
   session = req.session;
+  const emails = getEmails();
+  console.log(emails);
   const subject = req.body.subject;
   const content = req.body.content;
   const sql = `INSERT INTO notes (user_id, note_subject,note_content,note_date) VALUES ("${session.user_id}","${subject}","${content}","${convertDateTime()}")`;
@@ -152,7 +154,7 @@ app.post('/notes' , (req, res)=>{
     if(result.insertId > 0){
     message = {
       from: "johan@mail.com",
-      to: `"${getEmails()}"`,
+      to: emails,
       subject: "Subject",
       text: "A user had added to global Notes"
          }
@@ -195,14 +197,13 @@ date = date.getUTCFullYear() + '-' +
 //Get all email addresses of users that posted Notes
 
 function getEmails(){
-
 const sql = `SELECT DISTINCT user_email FROM users WHERE user_hasContributed = 1;`;
+let result = [];
 connection.query(sql,(err, emails)=> {
   if (err) throw err;
-  emailList = [];
   for(let i = 0 ; i < emails.length;i++){
-    emailList.push(emails[i].user_email);
+    result.push(emails[i].user_email);
   }
-  return emailList.join(', ');
 });
+return result;
 }
